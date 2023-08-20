@@ -20,9 +20,9 @@
         ctx.fillRect(130, 130, 80, 80);
         ctx.fillStyle = '#FF9699';
         ctx.beginPath();
-        ctx.moveTo(285, 10)
-        ctx.lineTo(310, 85)
-        ctx.lineTo(400, 105)
+        ctx.moveTo(285, 10);
+        ctx.lineTo(310, 85);
+        ctx.lineTo(400, 105);
         ctx.fill();
         ctx.strokeStyle = "black";
         ctx.closePath();
@@ -51,12 +51,18 @@
         ctx.font = "20px Georgia";
 
         ctx.fillStyle = "Red";
-        ctx.fillText("Hello World!", 10, 50);
-        
+        ctx.fillText("FillText", 10, 50);
+
         ctx.strokeStyle = "black";
-        ctx.strokeText("Hello World!", 10, 75);
+        ctx.strokeText("StrokeText", 10, 75);
+
+        const grd = ctx.createLinearGradient(20, 130, 220, 130);
+        grd.addColorStop(0, "green");
+        grd.addColorStop(0.5, "white");
+        grd.addColorStop(1, "red");
+        ctx.fillStyle = grd;
+        ctx.fillRect(20, 260, 200, 100);
 
     </script>
 </body>
-
 </html>
