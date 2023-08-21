@@ -17,12 +17,13 @@
         let figura = true;
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
-        ctx.fillStyle = "rgba(25,250,50,.4)";
-        ctx.strokeStyle = "black";
         canvas.addEventListener("click", (e) => {
             console.log("Hola");
             console.log(e);
             ctx.beginPath();
+            color = random_rgba();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = "black";
             (figura)
             ? ctx.arc(e.layerX, e.layerY, 20, 0, 2 * Math.PI)
             : ctx.rect(e.layerX, e.layerY, 40, 40);
@@ -36,6 +37,15 @@
         });
         canvas.addEventListener("mouseout", (e) => {
             figura = !figura;
+        });
+        canvas.addEventListener("mousemove", (e) => {
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(0,0,0,.2)";
+            ctx.strokeStyle = "rgba(0,0,0,.6)";
+            ctx.arc(e.layerX, e.layerY, 5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
         });
         function random_rgba() {
             var o = Math.round, r = Math.random, s = 255;
