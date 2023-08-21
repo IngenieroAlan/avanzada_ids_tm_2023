@@ -14,6 +14,7 @@
         canvas</canvas>
     <!-- <img src="./logo_uabcs.png" width="100" height="100" id="imagen"> -->
     <script>
+        let figura = true;
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
         ctx.fillStyle = "rgba(25,250,50,.4)";
@@ -22,14 +23,20 @@
             console.log("Hola");
             console.log(e);
             ctx.beginPath();
-            ctx.arc(e.layerX, e.layerY, 20, 0, 2 * Math.PI);
+            (figura)
+            ? ctx.arc(e.layerX, e.layerY, 20, 0, 2 * Math.PI)
+            : ctx.rect(e.layerX, e.layerY, 40, 40);
             ctx.stroke();
             ctx.fill();
+            ctx.closePath();
         });
         canvas.addEventListener("mouseover", (e) => {
             color = random_rgba();
             ctx.fillStyle = color;
-        })
+        });
+        canvas.addEventListener("mouseout", (e) => {
+            figura = !figura;
+        });
         function random_rgba() {
             var o = Math.round, r = Math.random, s = 255;
             return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
