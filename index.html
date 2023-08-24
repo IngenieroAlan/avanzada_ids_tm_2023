@@ -16,19 +16,39 @@
     <script>
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
-        let x,y;
+        let x = 300, y = 300, color, size = 40;
         document.addEventListener("keydown", (e) => {
-            let color = random_rgba();
-            x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
+            color = random_rgba();
+            /*  x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600); */
+            if ((x < 600 && x > 0) && (y < 600 && y > 0)) {
+                switch (e.keyCode) {
+                    case 87: case 38:
+                        y -= 10;
+                        break;
+                    case 65: case 37:
+                        x -= 10;
+                        break;
+                    case 83: case 40:
+                        y += 10;
+                        break;
+                    case 68: case 39:
+                        x += 10;
+                        break;
+
+                }
+            }
+            crearRectangulo(ctx, color, x, y, size);
+        });
+        function crearRectangulo(ctx, color = "", x, y, size) {
             ctx.beginPath();
             ctx.fillStyle = color;
             ctx.strokeStyle = "black";
-            ctx.strokeRect(x, y, 40, 40);
-            ctx.fillRect(x, y, 40, 40);
+            ctx.strokeRect(x, y, size, size);
+            ctx.fillRect(x, y, size, size);
             ctx.stroke();
             ctx.fill();
             ctx.closePath();
-        });
+        }
         function random_rgba() {
             var o = Math.round, r = Math.random, s = 255;
             return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
