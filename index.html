@@ -14,10 +14,27 @@
         canvas</canvas>
     <!-- <img src="./logo_uabcs.png" width="100" height="100" id="imagen"> -->
     <script>
-        let figura = true, press = false;
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
-        canvas.addEventListener("click", (e) => {
+        let x,y;
+        document.addEventListener("keydown", (e) => {
+            let color = random_rgba();
+            x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(x, y, 40, 40);
+            ctx.fillRect(x, y, 40, 40);
+            ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+        });
+        function random_rgba() {
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+        /* let figura = true, press = false; */
+        /* canvas.addEventListener("click", (e) => {
             console.log("Hola");
             console.log(e);
             ctx.beginPath();
@@ -55,7 +72,7 @@
         function random_rgba() {
             var o = Math.round, r = Math.random, s = 255;
             return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-        }
+        } */
         /* ctx.fillStyle = '#CD0009';
         ctx.fillRect(90, 90, 80, 80);
         ctx.fillStyle = '#FF96FFBB';
