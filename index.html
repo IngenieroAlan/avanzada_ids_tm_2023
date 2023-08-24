@@ -40,6 +40,8 @@
             crearRectangulo(ctx, color, x, y, size);
         });
         function crearRectangulo(ctx, color = "", x, y, size) {
+            ctx.fillStyle = "lightgray";
+            ctx.fillRect(0, 0, 600, 600);
             ctx.beginPath();
             ctx.fillStyle = color;
             ctx.strokeStyle = "black";
