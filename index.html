@@ -24,7 +24,89 @@
     <script>
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
-        //Cara
+        let x = 300, y = 300, color, size = 40, dir=0;
+
+        document.addEventListener("keydown", (e) => {
+            color = random_rgba();
+            //x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
+            /* console.log(e.keyCode); */
+            switch (e.keyCode) {
+                case 87: case 38://w
+                    dir = 1;
+                    break;
+                case 65: case 37://a
+                    dir = 2;
+                    break;
+                case 83: case 40://s
+                    dir = 3;
+                    break;
+                case 68: case 39://d
+                    dir = 4;
+                    break;
+
+            }
+            //update();
+            /* if ((x < 600 && x > 0) && (y < 600 && y > 0)) {
+            } */
+        })
+        function update() {
+            switch (dir) {
+                case 1:
+                    y -= 10;
+                    if (y < -50) { y = 600 }
+                    break;
+                case 2:
+                    x -= 10;
+                    if (x < -50) { x = 600 }
+                    break;
+                case 3:
+                    y += 10;
+                    if (y > 600) { y = 0 }
+                    break;
+                case 4:
+                    x += 10;
+                    if (x > 600) { x = 0 }
+                    break;
+
+            }
+            crearRectangulo(ctx, color, x, y, size);
+            window.requestAnimationFrame(update);
+        }
+        
+        
+        function crearCirculo(ctx, color = "", x, y, size) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(x, y, size, 0, 2 * Math.PI)
+            ctx.fill();
+            ctx.closePath();
+        }
+        function crearRectangulo(ctx, color = "", x, y, size1, size2 = size1) {
+            ctx.fillStyle = "lightgray";
+            ctx.fillRect(0, 0, 600, 600);
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = "black";
+            ctx.fillRect(x, y, size1, size2);
+            ctx.strokeRect(x, y, size1, size2);
+            ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+        }
+        function random_rgba() {
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 17);
+                };
+        }());
+        window.requestAnimationFrame(update);
+        /* //Cara
         crearCirculo(ctx, '#fdd7b7', 300, 300, 200);
         lentes(ctx, 375, 250);
         //Cabello
@@ -103,21 +185,7 @@
                 ctx.fill();
                 ctx.closePath();
             }
-        }
-        function crearCirculo(ctx, color = "", x, y, size) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.arc(x, y, size, 0, 2 * Math.PI)
-            ctx.fill();
-            ctx.closePath();
-        }
-        function crearRectangulo(ctx, color = "", x, y, size1, size2 = size1) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, size1, size2);
-            ctx.fill();
-            ctx.closePath();
-        }
+        } */
 
         /* let x = 300, y = 300, color, size = 40;
         document.addEventListener("keydown", (e) => {
@@ -153,11 +221,7 @@
             ctx.stroke();
             ctx.fill();
             ctx.closePath();
-        }
-        function random_rgba() {
-            var o = Math.round, r = Math.random, s = 255;
-            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-        } */
+        }*/
         /* let figura = true, press = false; */
         /* canvas.addEventListener("click", (e) => {
             console.log("Hola");
