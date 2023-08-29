@@ -18,18 +18,117 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="600" height="600" style="background-color: lightgray;">Tu navegador no soporta
+    <canvas id="myCanvas" width="600" height="450" style="background-color: lightgray;">Tu navegador no soporta
         canvas</canvas>
     <!-- <img src="./logo_uabcs.png" width="100" height="100" id="imagen"> -->
     <script>
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
-        let x = 300, y = 300, color, size = 40, dir=0;
+        //let dir = 0;
+        let x = 300, y = 300, color, size = 40;
+        //Fondo:
+        const grd = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
+        grd.addColorStop(0, "rgb(255, 153, 0)");
+        grd.addColorStop(1, "rgb(204, 119, 50)");
+        crearRectangulo(ctx, grd, 0, 0, 600);
+        //Sol
 
-        document.addEventListener("keydown", (e) => {
+        const grdSol = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
+        grdSol.addColorStop(0, "rgb(255, 191, 72)");
+        grdSol.addColorStop(.5, "rgb(255, 129, 2)");
+        grdSol.addColorStop(1, "rgb(255, 191, 72)");
+
+        const gradient = ctx.createRadialGradient(270, 250, 0, 300, 270, 80);
+
+        // Add three color stops
+        gradient.addColorStop(0, "rgb(241, 157, 0)");
+        gradient.addColorStop(0.9, "rgb(255, 194, 10)");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+        // Set the fill style and draw a rectangle
+        ctx.fillStyle = gradient;
+        ctx.fillRect(175, 190, 250, 250);
+
+        /* crearCirculo(ctx, grdSol, 300, 275, 70); */
+        //Mar
+        const grdMar = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
+        grdMar.addColorStop(0, "rgb(101, 155, 255)");
+        grdMar.addColorStop(1, "rgb(30, 79, 151)");
+        crearRectangulo(ctx, grdMar, 0, 300, 600, 300);
+        //Olas
+        crearOlas(100, 300);
+        crearOlas(400, 300);
+        crearOlas(250, 375);
+        //Nubes
+        crearNube(90, 80);
+        crearNube(270, 50);
+        crearNube(450, 80);
+        //Gaviotas
+        crearGaviota(80, 200);
+        crearGaviota(80, 250);
+        crearGaviota(110, 225);
+
+        crearGaviota(480, 200);
+        crearGaviota(480, 250);
+        crearGaviota(510, 225);
+
+        crearGaviota(275, 150);
+        crearGaviota(300, 170);
+
+        function crearCirculo(ctx, color = "", x, y, size) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(x, y, size, 0, 2 * Math.PI)
+            ctx.fill();
+            ctx.closePath();
+        }
+        function crearRectangulo(ctx, color = "", x, y, size1, size2 = size1) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, size1, size2);
+            ctx.fill();
+            ctx.closePath();
+        }
+        function crearOlas(layerX, layerY) {
+            for (let i = 0; i < 4; i++) {
+                ctx.beginPath();
+                ctx.arc(layerX + i * 30, layerY + 50, 20, Math.PI, 0);
+                ctx.strokeStyle = "rgb(255, 255, 255)";
+                ctx.stroke();
+                ctx.fillStyle = grdMar;
+                ctx.fill();
+                ctx.closePath();
+            }
+            ctx.fillRect(layerX - 30, layerY + 40, 150, 10);
+            ctx.fill();
+        }
+        function crearGaviota(layerX, layerY) {
+            ctx.beginPath();
+            ctx.arc(layerX + 20, layerY, 10, Math.PI, 0);
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+            ctx.fillStyle = grd;
+            ctx.fill();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(layerX, layerY, 10, Math.PI, 0);
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+            ctx.fillStyle = grd;
+            ctx.fill();
+            ctx.closePath();
+        }
+        function crearNube(layerX, layerY) {
+            ctx.beginPath();
+            ctx.arc(layerX, layerY, 30, 0, Math.PI * 2);
+            ctx.arc(layerX + 30, layerY, 40, 0, Math.PI * 2);
+            ctx.arc(layerX + 70, layerY, 30, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.87)";
+            ctx.fill();
+            ctx.closePath();
+        }
+        /*document.addEventListener("keydown", (e) => {
             color = random_rgba();
-            //x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
-            /* console.log(e.keyCode); */
             switch (e.keyCode) {
                 case 87: case 38://w
                     dir = 1;
@@ -45,9 +144,6 @@
                     break;
 
             }
-            //update();
-            /* if ((x < 600 && x > 0) && (y < 600 && y > 0)) {
-            } */
         })
         function update() {
             switch (dir) {
@@ -105,7 +201,7 @@
                     window.setTimeout(callback, 17);
                 };
         }());
-        window.requestAnimationFrame(update);
+        window.requestAnimationFrame(update);*/
         /* //Cara
         crearCirculo(ctx, '#fdd7b7', 300, 300, 200);
         lentes(ctx, 375, 250);
