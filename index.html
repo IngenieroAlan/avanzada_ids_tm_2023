@@ -18,14 +18,122 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="600" height="450" style="background-color: lightgray;">Tu navegador no soporta
+    <canvas id="myCanvas" width="600" height="600" style="background-color: lightgray;">Tu navegador no soporta
         canvas</canvas>
     <!-- <img src="./logo_uabcs.png" width="100" height="100" id="imagen"> -->
     <script>
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
+        let dir = 0;
+        let x = 300, y = 300, color, size = 40, speed = 10;
+        class Rectangulo {
+            constructor(alto, ancho, x, y, color) {
+                this.alto = alto;
+                this.ancho = ancho;
+                this.x = x;
+                this.y = y;
+                this.color = color;
+            }
+            seTocan(target) {
+                if (this.x < target.x + target.ancho
+                    && this.x + this.ancho > target.x
+                    && this.y < target.y + target.alto
+                    && this.y + this.alto > target.y) {
+                    return true;
+                }
+                return false;
+            }
+            paint(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.alto, this.ancho);
+                ctx.strokeRect(this.x, this.y, this.alto, this.ancho);
+            }
+        }
+        const player = new Rectangulo(50, 50, 300, 250, "black");
+        const target = new Rectangulo(40, 40, 350, 350, "black");
+        document.addEventListener("keydown", (e) => {
+            color = random_rgba();
+            //x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
+            /* console.log(e.keyCode); */
+            switch (e.keyCode) {
+                case 87: case 38://w
+                    dir = 1;
+                    break;
+                case 65: case 37://a
+                    dir = 2;
+                    break;
+                case 83: case 40://s
+                    dir = 3;
+                    break;
+                case 68: case 39://d
+                    dir = 4;
+                    break;
+
+            }
+        })
+        function update() {
+            switch (dir) {
+                case 1:
+                    /* y -= 10; */
+                    player.y -= speed;
+                    if (player.y < -50) { player.y = 600 }
+                    break;
+                case 2:
+                    /* x -= 10; */
+                    player.x -= speed;
+                    if (player.x < -50) { player.x = 600 }
+                    break;
+                case 3:
+                    player.y += speed;
+                    /* y += 10; */
+                    if (player.y > 600) { player.y = 0 }
+                    break;
+                case 4:
+                    player.x += speed;
+                    /* x += 10; */
+                    if (player.x > 600) { player.x = 0 }
+                    break;
+
+            }
+            if(player.seTocan(target)){
+                target.x = Math.random()*560;
+                target.y = Math.random()*560;
+                speed += 0;
+            }
+            repaint();
+            /* crearRectangulo(ctx, color, x, y, size); */
+            window.requestAnimationFrame(update);
+        }
+        function repaint() {
+            ctx.fillStyle = "lightgray";
+            ctx.fillRect(0, 0, 600, 600);
+            ctx.beginPath();
+            player.color = random_rgba();
+            player.paint(ctx);
+            target.paint(ctx);
+            ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+            /* ctx.strokeStyle = "black";
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, size1, size2);
+            ctx.strokeRect(x, y, size1, size2); */
+        }
+        function random_rgba() {
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 17);
+                };
+        }());
+        window.requestAnimationFrame(update);
         //let dir = 0;
-        let x = 300, y = 300, color, size = 40;
+        /* let x = 300, y = 300, color, size = 40;
         //Fondo:
         const grd = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
         grd.addColorStop(0, "rgb(255, 153, 0)");
@@ -51,6 +159,7 @@
 
         /* crearCirculo(ctx, grdSol, 300, 275, 70); */
         //Mar
+        /*
         const grdMar = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
         grdMar.addColorStop(0, "rgb(101, 155, 255)");
         grdMar.addColorStop(1, "rgb(30, 79, 151)");
@@ -126,7 +235,7 @@
             ctx.fillStyle = "rgba(255, 255, 255, 0.87)";
             ctx.fill();
             ctx.closePath();
-        }
+        } */
         /*document.addEventListener("keydown", (e) => {
             color = random_rgba();
             switch (e.keyCode) {
