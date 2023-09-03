@@ -49,9 +49,11 @@
                 ctx.strokeRect(this.x, this.y, this.ancho, this.alto);
             }
         }
+        const muros = [];
+        muros.push(new Rectangulo(30, 420, 100, 100, "gray"));
+        muros.push(new Rectangulo(30, 420, 100, 500, "gray"));
         const player = new Rectangulo(50, 50, 300, 250, "black");
         const target = new Rectangulo(40, 40, 350, 350, "black");
-        const muro = new Rectangulo(30, 420, 100, 100, "gray");
         document.addEventListener("keydown", (e) => {
             color = random_rgba();
             //x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
@@ -102,23 +104,25 @@
                 speed += 1;
             }
             //pendientes
-            if (muro.seTocan(player)) {
-                switch (dir) {
-                    case 1:
-                        player.y += speed;
-                        break;
-                    case 2:
-                        player.x += speed;
-                        break;
-                    case 3:
-                        player.y -= speed;
-                        break;
-                    case 4:
-                        player.x -= speed;
-                        break;
-
+            muros.forEach(muro => {
+                if (muro.seTocan(player)) {
+                    switch (dir) {
+                        case 1:
+                            player.y += speed;
+                            break;
+                        case 2:
+                            player.x += speed;
+                            break;
+                        case 3:
+                            player.y -= speed;
+                            break;
+                        case 4:
+                            player.x -= speed;
+                            break;
+    
+                    }
                 }
-            }
+            });
             repaint();
             /* crearRectangulo(ctx, color, x, y, size); */
             window.requestAnimationFrame(update);
@@ -128,16 +132,14 @@
             ctx.fillRect(0, 0, 600, 600);
             ctx.beginPath();
             player.color = random_rgba();
-            muro.paint(ctx);
             player.paint(ctx);
             target.paint(ctx);
+            muros.forEach(muro => {
+                muro.paint(ctx);
+            });
             ctx.stroke();
             ctx.fill();
             ctx.closePath();
-            /* ctx.strokeStyle = "black";
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, size1, size2);
-            ctx.strokeRect(x, y, size1, size2); */
         }
         function random_rgba() {
             var o = Math.round, r = Math.random, s = 255;
