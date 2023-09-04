@@ -18,142 +18,91 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="600" height="600" style="background-color: lightgray;">Tu navegador no soporta
-        canvas</canvas>
-    <!-- <img src="./logo_uabcs.png" width="100" height="100" id="imagen"> -->
+    <canvas id="myCanvas" width="700" height="500" style="background-color: lightgray;">
+        Tu navegador no soporta canvas</canvas>
+    <img src="./mario.png" width="1" height="1" id="mario">
+    <img src="./planta.png" width="1" height="1" id="planta">
     <script>
         let canvas = document.getElementById("myCanvas");
+        const mario = document.getElementById("mario");
+        const planta = document.getElementById("planta");
         let ctx = canvas.getContext("2d");
-        let dir = 0;
-        let speed = 10;
-        class Rectangulo {
-            constructor(alto, ancho, x, y, color) {
-                this.alto = alto;
-                this.ancho = ancho;
-                this.x = x;
-                this.y = y;
-                this.color = color;
-            }
-            seTocan(target) {
-                if (this.x < target.x + target.ancho
-                    && this.x + this.ancho > target.x
-                    && this.y < target.y + target.alto
-                    && this.y + this.alto > target.y) {
-                    return true;
-                }
-                return false;
-            }
-            paint(ctx) {
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.ancho, this.alto);
-                ctx.strokeRect(this.x, this.y, this.ancho, this.alto);
-            }
+        let x, y, bloque;
+        crearRectangulo("#A2F0FF", 0, 0, 700, 500);
+        ctx.drawImage(mario,350, 50, 70, 70);
+        crearArbusto(100, 400);
+        crearBloque("#FF8A4E", 220, 80);
+        crearBloque("#FF8A4E", 262, 80);
+        crearBloque("#FF8A4E", 70, 150);
+        crearBloque("#FF8A4E", 630, 150);
+        //Sombra rectagulo azul
+        crearRectangulo("black", 290, 220, 120, 180);
+        //Rectangulo azul
+        crearWall("#71C2FF", 280, 210, 120, 180);
+        //Sombra rectagulo rosa
+        crearRectangulo("black", 210, 280, 120, 120);
+        //Rectangulo rosa
+        crearWall("#FFC0B5", 200, 270, 120, 120, "black");
+        //Rectangulo verde
+        crearWall("#00DD5B", 625, 270, 120, 120);
+        //Tuberia verde
+        crearTuberia(480, 275, 100, 120);
+        crearRectangulo("#FC9559", 0, 400, 700, 150);
+        function crearBloque(color = "", x, y) {
+            bloque = 40;
+            crearRectangulo(color, x, y, bloque, bloque, "black", 6);
+            crearCirculo("black", x + (bloque - 6), y + 5, 1, "black");
+            crearCirculo("black", x + (bloque - 6), y + (bloque - 6), 1, "black");
+            crearCirculo("black", x + 5, y + 5, 1, "black");
+            crearCirculo("black", x + 5, y + (bloque - 6), 1, "black");
         }
-        const muros = [];
-        muros.push(new Rectangulo(30, 420, 100, 100, "gray"));
-        muros.push(new Rectangulo(30, 420, 100, 500, "gray"));
-        const player = new Rectangulo(50, 50, 300, 250, "black");
-        const target = new Rectangulo(40, 40, 350, 350, "black");
-        document.addEventListener("keydown", (e) => {
-            color = random_rgba();
-            //x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
-            /* console.log(e.keyCode); */
-            switch (e.keyCode) {
-                case 87: case 38://w
-                    dir = 1;
-                    break;
-                case 65: case 37://a
-                    dir = 2;
-                    break;
-                case 83: case 40://s
-                    dir = 3;
-                    break;
-                case 68: case 39://d
-                    dir = 4;
-                    break;
-
-            }
-        })
-        function update() {
-            switch (dir) {
-                case 1:
-                    /* y -= 10; */
-                    player.y -= speed;
-                    if (player.y < -50) { player.y = 600 }
-                    break;
-                case 2:
-                    /* x -= 10; */
-                    player.x -= speed;
-                    if (player.x < -50) { player.x = 600 }
-                    break;
-                case 3:
-                    player.y += speed;
-                    /* y += 10; */
-                    if (player.y > 600) { player.y = 0 }
-                    break;
-                case 4:
-                    player.x += speed;
-                    /* x += 10; */
-                    if (player.x > 600) { player.x = 0 }
-                    break;
-
-            }
-            if (player.seTocan(target)) {
-                target.x = Math.random() * 560;
-                target.y = Math.random() * 560;
-                speed += 1;
-            }
-            //pendientes
-            muros.forEach(muro => {
-                if (muro.seTocan(player)) {
-                    switch (dir) {
-                        case 1:
-                            player.y += speed;
-                            break;
-                        case 2:
-                            player.x += speed;
-                            break;
-                        case 3:
-                            player.y -= speed;
-                            break;
-                        case 4:
-                            player.x -= speed;
-                            break;
-    
-                    }
-                }
-            });
-            repaint();
-            /* crearRectangulo(ctx, color, x, y, size); */
-            window.requestAnimationFrame(update);
+        function crearWall(color = "", x, y, ancho, alto = ancho) {
+            crearRectangulo(color, x, y, ancho, alto, "black");
+            crearCirculo("gray", x + (ancho - 10), y + 10, 8, "black");
+            crearCirculo("gray", x + (ancho - 10), y + (alto - 10), 8, "black");
+            crearCirculo("gray", x + 10, y + 10, 8, "black");
+            crearCirculo("gray", x + 10, y + (alto - 10), 8, "black");
         }
-        function repaint() {
-            ctx.fillStyle = "lightgray";
-            ctx.fillRect(0, 0, 600, 600);
+        function crearTuberia(x, y, ancho, alto) {
+            ctx.drawImage(planta, x-15, y-(alto*0.6), 120, 120);
+            crearRectangulo("black", x + 12, y + 6, ancho / 1.25, alto, "black", 8);
+            crearRectangulo("black", x + 5 * .979, y + 6, ancho, alto / 5, "black", 10);
+            crearRectangulo("#008800", x, y, ancho / 1.25, alto, "black", 8);
+            crearRectangulo("rgb(40, 224, 23)", x + 4, y + (y * 0.11), ancho / 8, alto * 0.8);
+            crearRectangulo("#008800", x * .979, y, ancho, alto / 5, "black", 10);
+            crearRectangulo("rgb(40, 224, 23)", (x * .979) + 4, y + 4, ancho / 8, (alto / 5) * 0.6);
+            
+        }
+        function crearCirculo(color = "", x, y, size, stroke = color) {
             ctx.beginPath();
-            player.color = random_rgba();
-            player.paint(ctx);
-            target.paint(ctx);
-            muros.forEach(muro => {
-                muro.paint(ctx);
-            });
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = stroke;
+            ctx.arc(x, y, size, 0, 2 * Math.PI)
+            ctx.fill();
             ctx.stroke();
+            ctx.closePath();
+        }
+        function crearRectangulo(color = "", x, y, ancho, alto = ancho, stroke = color, borderWidth = 10) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.lineJoin = "bevel";
+            ctx.lineWidth = borderWidth;
+            ctx.strokeRect(x, y, ancho, alto);
+            ctx.fillRect(x, y, ancho, alto);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+        }
+        function crearArbusto(layerX, layerY) {
+            ctx.beginPath();
+            ctx.arc(layerX, layerY, 25, 0, Math.PI * 2);
+            ctx.arc(layerX + 18, layerY, 35, 0, Math.PI * 2);
+            ctx.fillStyle = "green";
             ctx.fill();
             ctx.closePath();
         }
-        function random_rgba() {
-            var o = Math.round, r = Math.random, s = 255;
-            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-        }
-        window.requestAnimationFrame = (function () {
-            return window.requestAnimationFrame ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                function (callback) {
-                    window.setTimeout(callback, 17);
-                };
-        }());
-        window.requestAnimationFrame(update);
         //let dir = 0;
         /* let x = 300, y = 300, color, size = 40;
         //Fondo:
