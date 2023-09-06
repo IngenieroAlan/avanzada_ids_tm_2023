@@ -18,256 +18,154 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="700" height="500" style="background-color: lightgray;">
-        Tu navegador no soporta canvas</canvas>
-    <img src="./mario.png" width="1" height="1" id="mario">
-    <img src="./planta.png" width="1" height="1" id="planta">
+    <canvas id="myCanvas" width="600" height="600" style="background-color: lightgray;">Tu navegador no soporta
+        canvas</canvas>
+    <!-- <img src="./logo_uabcs.png" width="100" height="100" id="imagen"> -->
     <script>
         let canvas = document.getElementById("myCanvas");
-        const mario = document.getElementById("mario");
-        const planta = document.getElementById("planta");
         let ctx = canvas.getContext("2d");
-        let x, y, bloque;
-        crearRectangulo("#A2F0FF", 0, 0, 700, 500);
-        ctx.drawImage(mario,350, 50, 70, 70);
-        crearArbusto(100, 400);
-        crearBloque("#FF8A4E", 220, 80);
-        crearBloque("#FF8A4E", 262, 80);
-        crearBloque("#FF8A4E", 70, 150);
-        crearBloque("#FF8A4E", 630, 150);
-        //Sombra rectagulo azul
-        crearRectangulo("black", 290, 220, 120, 180);
-        //Rectangulo azul
-        crearWall("#71C2FF", 280, 210, 120, 180);
-        //Sombra rectagulo rosa
-        crearRectangulo("black", 210, 280, 120, 120);
-        //Rectangulo rosa
-        crearWall("#FFC0B5", 200, 270, 120, 120, "black");
-        //Rectangulo verde
-        crearWall("#00DD5B", 625, 270, 120, 120);
-        //Tuberia verde
-        crearTuberia(480, 275, 100, 120);
-        crearRectangulo("#FC9559", 0, 400, 700, 150);
-        function crearBloque(color = "", x, y) {
-            bloque = 40;
-            crearRectangulo(color, x, y, bloque, bloque, "black", 6);
-            crearCirculo("black", x + (bloque - 6), y + 5, 1, "black");
-            crearCirculo("black", x + (bloque - 6), y + (bloque - 6), 1, "black");
-            crearCirculo("black", x + 5, y + 5, 1, "black");
-            crearCirculo("black", x + 5, y + (bloque - 6), 1, "black");
-        }
-        function crearWall(color = "", x, y, ancho, alto = ancho) {
-            crearRectangulo(color, x, y, ancho, alto, "black");
-            crearCirculo("gray", x + (ancho - 10), y + 10, 8, "black");
-            crearCirculo("gray", x + (ancho - 10), y + (alto - 10), 8, "black");
-            crearCirculo("gray", x + 10, y + 10, 8, "black");
-            crearCirculo("gray", x + 10, y + (alto - 10), 8, "black");
-        }
-        function crearTuberia(x, y, ancho, alto) {
-            ctx.drawImage(planta, x-15, y-(alto*0.6), 120, 120);
-            crearRectangulo("black", x + 12, y + 6, ancho / 1.25, alto, "black", 8);
-            crearRectangulo("black", x + 5 * .979, y + 6, ancho, alto / 5, "black", 10);
-            crearRectangulo("#008800", x, y, ancho / 1.25, alto, "black", 8);
-            crearRectangulo("rgb(40, 224, 23)", x + 4, y + (y * 0.11), ancho / 8, alto * 0.8);
-            crearRectangulo("#008800", x * .979, y, ancho, alto / 5, "black", 10);
-            crearRectangulo("rgb(40, 224, 23)", (x * .979) + 4, y + 4, ancho / 8, (alto / 5) * 0.6);
-            
-        }
-        function crearCirculo(color = "", x, y, size, stroke = color) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = stroke;
-            ctx.arc(x, y, size, 0, 2 * Math.PI)
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
-        }
-        function crearRectangulo(color = "", x, y, ancho, alto = ancho, stroke = color, borderWidth = 10) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.strokeStyle = stroke;
-            ctx.lineJoin = "bevel";
-            ctx.lineWidth = borderWidth;
-            ctx.strokeRect(x, y, ancho, alto);
-            ctx.fillRect(x, y, ancho, alto);
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
-        }
-        function crearArbusto(layerX, layerY) {
-            ctx.beginPath();
-            ctx.arc(layerX, layerY, 25, 0, Math.PI * 2);
-            ctx.arc(layerX + 18, layerY, 35, 0, Math.PI * 2);
-            ctx.fillStyle = "green";
-            ctx.fill();
-            ctx.closePath();
-        }
-        //let dir = 0;
-        /* let x = 300, y = 300, color, size = 40;
-        //Fondo:
-        const grd = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
-        grd.addColorStop(0, "rgb(255, 153, 0)");
-        grd.addColorStop(1, "rgb(204, 119, 50)");
-        crearRectangulo(ctx, grd, 0, 0, 600);
-        //Sol
-
-        const grdSol = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
-        grdSol.addColorStop(0, "rgb(255, 191, 72)");
-        grdSol.addColorStop(.5, "rgb(255, 129, 2)");
-        grdSol.addColorStop(1, "rgb(255, 191, 72)");
-
-        const gradient = ctx.createRadialGradient(270, 250, 0, 300, 270, 80);
-
-        // Add three color stops
-        gradient.addColorStop(0, "rgb(241, 157, 0)");
-        gradient.addColorStop(0.9, "rgb(255, 194, 10)");
-        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-
-        // Set the fill style and draw a rectangle
-        ctx.fillStyle = gradient;
-        ctx.fillRect(175, 190, 250, 250);
-
-        /* crearCirculo(ctx, grdSol, 300, 275, 70); */
-        //Mar
-        /*
-        const grdMar = ctx.createLinearGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
-        grdMar.addColorStop(0, "rgb(101, 155, 255)");
-        grdMar.addColorStop(1, "rgb(30, 79, 151)");
-        crearRectangulo(ctx, grdMar, 0, 300, 600, 300);
-        //Olas
-        crearOlas(100, 300);
-        crearOlas(400, 300);
-        crearOlas(250, 375);
-        //Nubes
-        crearNube(90, 80);
-        crearNube(270, 50);
-        crearNube(450, 80);
-        //Gaviotas
-        crearGaviota(80, 200);
-        crearGaviota(80, 250);
-        crearGaviota(110, 225);
-
-        crearGaviota(480, 200);
-        crearGaviota(480, 250);
-        crearGaviota(510, 225);
-
-        crearGaviota(275, 150);
-        crearGaviota(300, 170);
-
-        function crearCirculo(ctx, color = "", x, y, size) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.arc(x, y, size, 0, 2 * Math.PI)
-            ctx.fill();
-            ctx.closePath();
-        }
-        function crearRectangulo(ctx, color = "", x, y, size1, size2 = size1) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, size1, size2);
-            ctx.fill();
-            ctx.closePath();
-        }
-        function crearOlas(layerX, layerY) {
-            for (let i = 0; i < 4; i++) {
-                ctx.beginPath();
-                ctx.arc(layerX + i * 30, layerY + 50, 20, Math.PI, 0);
-                ctx.strokeStyle = "rgb(255, 255, 255)";
-                ctx.stroke();
-                ctx.fillStyle = grdMar;
-                ctx.fill();
-                ctx.closePath();
+        let dir = 0, speed = 5, score = 0;
+        let pause = false;
+        class Rectangulo {
+            constructor(alto, ancho, x, y, color) {
+                this.alto = alto;
+                this.ancho = ancho;
+                this.x = x;
+                this.y = y;
+                this.color = color;
             }
-            ctx.fillRect(layerX - 30, layerY + 40, 150, 10);
-            ctx.fill();
+            seTocan(target) {
+                if (this.x < target.x + target.ancho
+                    && this.x + this.ancho > target.x
+                    && this.y < target.y + target.alto
+                    && this.y + this.alto > target.y) {
+                    return true;
+                }
+                return false;
+            }
+            paint(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.ancho, this.alto);
+                ctx.strokeRect(this.x, this.y, this.ancho, this.alto);
+            }
         }
-        function crearGaviota(layerX, layerY) {
-            ctx.beginPath();
-            ctx.arc(layerX + 20, layerY, 10, Math.PI, 0);
-            ctx.strokeStyle = "black";
-            ctx.stroke();
-            ctx.fillStyle = grd;
-            ctx.fill();
-            ctx.closePath();
-            ctx.beginPath();
-            ctx.arc(layerX, layerY, 10, Math.PI, 0);
-            ctx.strokeStyle = "black";
-            ctx.stroke();
-            ctx.fillStyle = grd;
-            ctx.fill();
-            ctx.closePath();
-        }
-        function crearNube(layerX, layerY) {
-            ctx.beginPath();
-            ctx.arc(layerX, layerY, 30, 0, Math.PI * 2);
-            ctx.arc(layerX + 30, layerY, 40, 0, Math.PI * 2);
-            ctx.arc(layerX + 70, layerY, 30, 0, Math.PI * 2);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.87)";
-            ctx.fill();
-            ctx.closePath();
-        } */
-        /*document.addEventListener("keydown", (e) => {
+        const muros = [];
+        muros.push(new Rectangulo(30, 420, 100, 100, "gray"));
+        muros.push(new Rectangulo(30, 420, 100, 500, "gray"));
+        muros.push(new Rectangulo(150, 30, 80, 230, "gray"));
+        const player = new Rectangulo(50, 50, 300, 250, "black");
+        const target = new Rectangulo(40, 40, 350, 350, "black");
+        document.addEventListener("keydown", (e) => {
             color = random_rgba();
+            //x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
+            /* console.log(e.keyCode); */
             switch (e.keyCode) {
                 case 87: case 38://w
-                    dir = 1;
+                    if (!pause) dir = 1;
                     break;
                 case 65: case 37://a
-                    dir = 2;
+                    if (!pause) dir = 2;
                     break;
                 case 83: case 40://s
-                    dir = 3;
+                    if (!pause) dir = 3;
                     break;
                 case 68: case 39://d
-                    dir = 4;
+                    if (!pause) dir = 4;
                     break;
-
+                case 32://Spacebar
+                    pause = !pause;
+                    break;
             }
         })
         function update() {
-            switch (dir) {
-                case 1:
-                    y -= 10;
-                    if (y < -50) { y = 600 }
-                    break;
-                case 2:
-                    x -= 10;
-                    if (x < -50) { x = 600 }
-                    break;
-                case 3:
-                    y += 10;
-                    if (y > 600) { y = 0 }
-                    break;
-                case 4:
-                    x += 10;
-                    if (x > 600) { x = 0 }
-                    break;
+            if (!pause) {
+                switch (dir) {
+                    case 1:
+                        /* y -= 10; */
+                        player.y -= speed;
+                        if (player.y < -50) { player.y = 600 }
+                        break;
+                    case 2:
+                        /* x -= 10; */
+                        player.x -= speed;
+                        if (player.x < -50) { player.x = 600 }
+                        break;
+                    case 3:
+                        player.y += speed;
+                        /* y += 10; */
+                        if (player.y > 600) { player.y = 0 }
+                        break;
+                    case 4:
+                        player.x += speed;
+                        /* x += 10; */
+                        if (player.x > 600) { player.x = 0 }
+                        break;
 
+                }
+                //pendientes
+                muros.forEach(muro => {
+                    if (muro.seTocan(player)) {
+                        switch (dir) {
+                            case 1:
+                                player.y += speed;
+                                break;
+                            case 2:
+                                player.x += speed;
+                                break;
+                            case 3:
+                                player.y -= speed;
+                                break;
+                            case 4:
+                                player.x -= speed;
+                                break;
+
+                        }
+                    }
+                    if (muro.seTocan(target)) {
+                        target.x = Math.random() * 560;
+                        target.y = Math.random() * 560;
+                        if (player.seTocan(target)) {
+                            target.x = Math.random() * 560;
+                            target.y = Math.random() * 560;
+                        }
+                    }
+                });
+                if (player.seTocan(target)) {
+                    target.x = Math.random() * 560;
+                    target.y = Math.random() * 560;
+                    speed += 1;
+                    score += 10;
+                }
             }
-            crearRectangulo(ctx, color, x, y, size);
+            repaint();
+            /* crearRectangulo(ctx, color, x, y, size); */
             window.requestAnimationFrame(update);
         }
-        
-        
-        function crearCirculo(ctx, color = "", x, y, size) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.arc(x, y, size, 0, 2 * Math.PI)
-            ctx.fill();
-            ctx.closePath();
-        }
-        function crearRectangulo(ctx, color = "", x, y, size1, size2 = size1) {
-            ctx.fillStyle = "lightgray";
-            ctx.fillRect(0, 0, 600, 600);
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.strokeStyle = "black";
-            ctx.fillRect(x, y, size1, size2);
-            ctx.strokeRect(x, y, size1, size2);
-            ctx.stroke();
-            ctx.fill();
-            ctx.closePath();
+        function repaint() {
+            if (!pause) {
+                ctx.fillStyle = "lightgray";
+                ctx.fillRect(0, 0, 600, 600);
+                ctx.beginPath();
+                ctx.font = "30px verdana";
+                ctx.fillStyle = 'black';
+                ctx.fillText("Score:" + score, 10, 30);
+                player.color = random_rgba();
+                player.paint(ctx);
+                target.paint(ctx);
+                muros.forEach(muro => {
+                    muro.paint(ctx);
+                });
+                ctx.stroke();
+                ctx.fill();
+                ctx.closePath();
+            } else {
+                ctx.fillStyle = "rgba(122, 122, 122, 0.02)";
+                ctx.fillRect(0, 0, 600, 600);
+
+                ctx.font = "30px verdana";
+                ctx.fillStyle = 'white';
+                ctx.fillText("Pause", 270, 300);
+            }
         }
         function random_rgba() {
             var o = Math.round, r = Math.random, s = 255;
@@ -281,224 +179,7 @@
                     window.setTimeout(callback, 17);
                 };
         }());
-        window.requestAnimationFrame(update);*/
-        /* //Cara
-        crearCirculo(ctx, '#fdd7b7', 300, 300, 200);
-        lentes(ctx, 375, 250);
-        //Cabello
-        for (let x = 150; x <= 450; x = x + 50) {
-            crearCirculo(ctx, '#411700', x, 100, 30);
-            crearCirculo(ctx, '#411700', x, 125, 30);
-            crearCirculo(ctx, '#411700', x, 150, 30);
-        }
-        nariz(ctx, 305, 325);
-        sonriza(ctx, 300, 375);
-        //Ropa
-        crearRectangulo(ctx, 'black', 125, 550, 350, 100);
-        crearCirculo(ctx, 'black', 125, 590, 40);
-        crearCirculo(ctx, 'black', 475, 590, 40);
-        //Cuello
-        crearRectangulo(ctx, '#fdd7b7', 260, 480, 80);
-        crearCirculo(ctx, '#fdd7b7', 300, 550, 40);
-        function nariz(ctx, x, y) {
-            ctx.beginPath();
-            ctx.strokeStyle = "#000000";
-            ctx.moveTo(x - 5, y - 50);
-            ctx.lineTo(x - 4, y - 25)
-            ctx.lineTo(x + 5, y)
-            ctx.lineTo(x - 1, y)
-            ctx.stroke();
-            ctx.closePath();
-        }
-        function lentes(ctx, x, y) {
-            crearCirculo(ctx, 'white', 225, 250, 50);
-            crearCirculo(ctx, 'white', 375, 250, 50);
-            crearCirculo(ctx, '#311700', 225, 250, 15);
-            crearCirculo(ctx, '#311700', 375, 250, 15);
-            ctx.beginPath();
-            ctx.strokeStyle = "#5e5e5e";
-            ctx.fillStyle = "#FFFFFF4a";
-            ctx.arc(x - 150, y, 60, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
-            ctx.beginPath();
-            ctx.arc(x, y, 60, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
-            ctx.beginPath();
-            ctx.moveTo(x - 90, y)
-            ctx.lineTo(x - 60, y)
-            ctx.stroke();
-            ctx.closePath();
-            ctx.beginPath();
-            ctx.moveTo(x - 265, y - 20)
-            ctx.lineTo(x - 210, y)
-            ctx.stroke();
-            ctx.closePath();
-            ctx.beginPath();
-            ctx.moveTo(x + 115, y - 20)
-            ctx.lineTo(x + 60, y)
-            ctx.stroke();
-            ctx.closePath();
-        }
-        function sonriza(ctx, x, y) {
-            ctx.beginPath();
-            ctx.fillStyle = "black";
-            ctx.arc(x, y, 90, 0, 1 * Math.PI);
-            ctx.fill();
-            ctx.closePath();
-            ctx.beginPath();
-            ctx.fillStyle = "#c72626";
-            ctx.arc(x, y + 20, 65, 0, 1 * Math.PI);
-            ctx.fill();
-            ctx.closePath();
-            for (let i = 0; i <= 5; i++) {
-                ctx.beginPath();
-                ctx.fillStyle = "white";
-                ctx.arc(x + 75 - i * 30, y - 0.9, 16, 0, 1 * Math.PI);
-                ctx.fill();
-                ctx.closePath();
-            }
-        } */
-
-        /* let x = 300, y = 300, color, size = 40;
-        document.addEventListener("keydown", (e) => {
-                color = random_rgba(); */
-        /*  x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600); */
-        /* if ((x < 600 && x > 0) && (y < 600 && y > 0)) {
-            switch (e.keyCode) {
-                case 87: case 38:
-                    y -= 10;
-                    break;
-                case 65: case 37:
-                    x -= 10;
-                    break;
-                case 83: case 40:
-                    y += 10;
-                    break;
-                case 68: case 39:
-                    x += 10;
-                    break;
-
-            }
-        }
-        crearRectangulo(ctx, color, x, y, size);
-    }); */
-        /* function crearRectangulo(ctx, color = "", x, y, size) {
-            ctx.fillStyle = "lightgray";
-            ctx.fillRect(0, 0, 600, 600);
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.strokeStyle = "black";
-            ctx.strokeRect(x, y, size, size);
-            ctx.fillRect(x, y, size, size);
-            ctx.stroke();
-            ctx.fill();
-            ctx.closePath();
-        }*/
-        /* let figura = true, press = false; */
-        /* canvas.addEventListener("click", (e) => {
-            console.log("Hola");
-            console.log(e);
-            ctx.beginPath();
-            ctx.fillStyle = "rgba(25,250,50,.4)";
-            ctx.strokeStyle = "black";
-            (figura)
-                ? ctx.arc(e.layerX, e.layerY, 20, 0, 2 * Math.PI)
-                : ctx.rect(e.layerX - 25, e.layerY - 25, 40, 40);
-            ctx.stroke();
-            ctx.fill();
-            ctx.closePath();
-        });
-        canvas.addEventListener("mouseover", (e) => {
-            color = random_rgba();
-            ctx.fillStyle = color;
-        });
-        canvas.addEventListener("mouseout", (e) => {
-            figura = !figura;
-        });
-        canvas.addEventListener("mousemove", (e) => {
-            if(press){
-                ctx.beginPath();
-                ctx.arc(e.layerX, e.layerY, 5, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.stroke();
-                ctx.closePath();
-            }
-        });
-        canvas.addEventListener("mouseup", (e) => {
-            press = false
-        });
-        canvas.addEventListener("mousedown", (e) => {
-            press = true;
-        });
-        function random_rgba() {
-            var o = Math.round, r = Math.random, s = 255;
-            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-        } */
-        /* ctx.fillStyle = '#CD0009';
-        ctx.fillRect(90, 90, 80, 80);
-        ctx.fillStyle = '#FF96FFBB';
-        ctx.fillRect(130, 130, 80, 80);
-        ctx.fillStyle = '#FF9699';
-        ctx.beginPath();
-        ctx.moveTo(285, 10);
-        ctx.lineTo(310, 85);
-        ctx.lineTo(400, 105);
-        ctx.fill();
-        ctx.closePath();
-        ctx.strokeStyle = "black";
-        ctx.beginPath();
-        ctx.moveTo(400, 5)
-        ctx.lineTo(500, 65)
-        ctx.stroke();
-
-        ctx.fillStyle = "green";
-        ctx.beginPath();
-        ctx.arc(305, 210, 40, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.fillStyle = "cyan";
-        ctx.strokeStyle = "blue";
-        ctx.beginPath();
-        ctx.arc(305, 310, 28, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-
-        ctx.strokeStyle = "purple";
-        ctx.beginPath();
-        ctx.arc(405, 210, 28, 0, 2 * Math.PI);
-        ctx.stroke();
-
-        ctx.font = "20px Georgia";
-
-        ctx.fillStyle = "Red";
-        ctx.fillText("FillText", 10, 50);
-
-        ctx.strokeStyle = "black";
-        ctx.strokeText("StrokeText", 10, 75);
-
-        const grd = ctx.createLinearGradient(20, 130, 220, 130);
-        grd.addColorStop(0, "green");
-        grd.addColorStop(0.5, "white");
-        grd.addColorStop(1, "red");
-        ctx.fillStyle = grd;
-        ctx.fillRect(20, 260, 200, 100);
-
-        const x = 20, y = 370;
-        const rgrd = ctx.createRadialGradient(x + 65, y + 45, 5, x + 90, y + 50, 60);
-        rgrd.addColorStop(0, "#e9e9e9");
-        rgrd.addColorStop(0.55, "#7a7a7a");
-        rgrd.addColorStop(1, "black");
-
-        ctx.fillStyle = rgrd;
-        ctx.fillRect(x, y, 160, 105);
-
-        const img = document.getElementById("imagen");
-        ctx.drawImage(img, 200, 375, 105,100); */
-
+        window.requestAnimationFrame(update);
     </script>
 </body>
 
