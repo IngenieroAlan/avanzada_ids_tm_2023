@@ -18,176 +18,78 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="600" height="600" style="background-color: lightgray;">Tu navegador no soporta
-        canvas</canvas>
-    <!-- <img src="./logo_uabcs.png" width="100" height="100" id="imagen"> -->
+    <canvas id="myCanvas" width="700" height="500" style="background-color: lightgray;">
+        Tu navegador no soporta canvas</canvas>
     <script>
         let canvas = document.getElementById("myCanvas");
         let ctx = canvas.getContext("2d");
-        let dir = 0, speed = 5, score = 0;
-        let pause = false;
-        let link = new Image(), rupia = new Image();
-        let rupiaSound = new Audio();
-        link.src = "link.png";
-        rupia.src = "rupia.png";
-        rupiaSound.src = "rupee_sound.mp3";
-        class Rectangulo {
-            constructor(alto, ancho, x, y, color) {
-                this.alto = alto;
-                this.ancho = ancho;
-                this.x = x;
-                this.y = y;
-                this.color = color;
-            }
-            seTocan(target) {
-                if (this.x < target.x + target.ancho
-                    && this.x + this.ancho > target.x
-                    && this.y < target.y + target.alto
-                    && this.y + this.alto > target.y) {
-                    return true;
-                }
-                return false;
-            }
-            paint(ctx) {
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.ancho, this.alto);
-                ctx.strokeRect(this.x, this.y, this.ancho, this.alto);
-            }
-        }
-        const muros = [];
-        muros.push(new Rectangulo(30, 420, 100, 100, "gray"));
-        muros.push(new Rectangulo(30, 420, 100, 500, "gray"));
-        muros.push(new Rectangulo(150, 30, 80, 230, "gray"));
-        const player = new Rectangulo(50, 50, 300, 250, "black");
-        const target = new Rectangulo(40, 30, 350, 350, "black");
-        document.addEventListener("keydown", (e) => {
-            color = random_rgba();
-            //x = Math.floor(Math.random() * 600), y = Math.floor(Math.random() * 600);
-            /* console.log(e.keyCode); */
-            switch (e.keyCode) {
-                case 87: case 38://w
-                    if (!pause) dir = 1;
-                    break;
-                case 65: case 37://a
-                    if (!pause) dir = 2;
-                    break;
-                case 83: case 40://s
-                    if (!pause) dir = 3;
-                    break;
-                case 68: case 39://d
-                    if (!pause) dir = 4;
-                    break;
-                case 32://Spacebar
-                    pause = !pause;
-                    break;
-            }
-        })
-        function update() {
-            if (!pause) {
-                switch (dir) {
-                    case 1:
-                        /* y -= 10; */
-                        player.y -= speed;
-                        if (player.y < -50) { player.y = 600 }
-                        break;
-                    case 2:
-                        /* x -= 10; */
-                        player.x -= speed;
-                        if (player.x < -50) { player.x = 600 }
-                        break;
-                    case 3:
-                        player.y += speed;
-                        /* y += 10; */
-                        if (player.y > 600) { player.y = 0 }
-                        break;
-                    case 4:
-                        player.x += speed;
-                        /* x += 10; */
-                        if (player.x > 600) { player.x = 0 }
-                        break;
+        let hojaPalma = new Image();
+        hojaPalma.src = "palma.png";
+        crearRectangulo("#2000A0", 0, 0, 700, 500);
+        fondoMosaico(350);
+        //crearRectangulo("#C06000", 0, 345, 700, 175);
+        ctx.drawImage(hojaPalma, 420, 60, 100, 275);
+        //crearRectangulo("#804000", 460, 205, 18, 150); //Tronco
+        ctx.drawImage(hojaPalma,-85, 100, 150, 250);
+        crearGirasol(640, 245);
+        crearPasto(325);
+        crearCirculo("#2000A0", 150, 275, 30, 'yellow');
+        crearCirculo("#2000A0", 250, 275, 30, 'yellow');
+        crearCirculo("#2000A0", 350, 275, 30, 'yellow');
 
+        function fondoMosaico(y) {
+            crearRectangulo("#C06000", 0, y, 700, 175);
+            for (let i = 0; i < 700; i = i + 50) {
+                if (i % 100 == 0) {
+                    crearRectangulo("#602000", i, y + 50, 50, 50);
                 }
-                //pendientes
-                muros.forEach(muro => {
-                    if (muro.seTocan(player)) {
-                        switch (dir) {
-                            case 1:
-                                player.y += speed;
-                                break;
-                            case 2:
-                                player.x += speed;
-                                break;
-                            case 3:
-                                player.y -= speed;
-                                break;
-                            case 4:
-                                player.x -= speed;
-                                break;
-
-                        }
-                    }
-                    if (muro.seTocan(target)) {
-                        target.x = Math.random() * 560;
-                        target.y = Math.random() * 560;
-                        if (player.seTocan(target)) {
-                            target.x = Math.random() * 560;
-                            target.y = Math.random() * 560;
-                        }
-                    }
-                });
-                if (player.seTocan(target)) {
-                    rupiaSound.play();
-                    target.x = Math.random() * 560;
-                    target.y = Math.random() * 560;
-                    speed += 1;
-                    score += 10;
+                else {
+                    crearRectangulo("#602000", i, y + 100, 50, 50);
+                    crearRectangulo("#602000", i, y, 50, 50);
                 }
             }
-            repaint();
-            /* crearRectangulo(ctx, color, x, y, size); */
-            window.requestAnimationFrame(update);
+            crearRectangulo("rgba(0, 0, 0, 0.50)", 0, y, 700, 30);
         }
-        function repaint() {
-            if (!pause) {
-                ctx.fillStyle = "lightgray";
-                ctx.fillRect(0, 0, 600, 600);
-                ctx.beginPath();
-                ctx.font = "30px verdana";
-                ctx.fillStyle = 'black';
-                ctx.fillText("Score:" + score, 10, 30);
-                player.color = random_rgba();
-                //player.paint(ctx);
-                ctx.drawImage(link, player.x, player.y, player.ancho, player.alto);
-                //target.paint(ctx);
-                ctx.drawImage(rupia, target.x, target.y, target.ancho, target.alto);
-                muros.forEach(muro => {
-                    muro.paint(ctx);
-                });
-                ctx.stroke();
-                ctx.fill();
-                ctx.closePath();
-            } else {
-                ctx.fillStyle = "rgba(122, 122, 122, 0.02)";
-                ctx.fillRect(0, 0, 600, 600);
-
-                ctx.font = "30px verdana";
-                ctx.fillStyle = 'white';
-                ctx.fillText("Pause", 270, 300);
+        function crearPasto(y) {
+            crearRectangulo("#80E000", 0, y, 700, 20);
+            crearRectangulo("#40A000", 0, y + 15, 700, 10);
+            crearRectangulo("#006000", 0, y + 25, 700, 8);
+        }
+        function crearGirasol(x, y) {
+            crearRectangulo("#40A000", x, y, 10, 80); //Girasol tallo
+            for (let i = 0; i < 50; i = i + 10) {
+                crearCirculo("yellow", (x - 15) + i, y, 10, 'yellow');
+                crearCirculo("yellow", (x - 15) + i, y + 10, 10, 'yellow');
+                if (i % 15 == 0) {
+                    crearCirculo("yellow", (x - 10) + i, y + 20, 10, 'yellow');
+                    crearCirculo("yellow", (x - 10) + i, y - 10, 10, 'yellow');
+                }
             }
+            crearCirculo("yellow", x+5, y-15, 10, 'yellow');
+            crearCirculo("yellow", x+5, y+25, 10, 'yellow');
+            /* crearCirculo("yellow", x -15, y, 10, 'yellow'); */
+            crearCirculo("#406040", x + 5, y + 5, 20, 'yellow');
         }
-        function random_rgba() {
-            var o = Math.round, r = Math.random, s = 255;
-            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        function crearCirculo(color = "", x, y, size, stroke = color) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = stroke;
+            ctx.arc(x, y, size, 0, 2 * Math.PI)
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
         }
-        window.requestAnimationFrame = (function () {
-            return window.requestAnimationFrame ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                function (callback) {
-                    window.setTimeout(callback, 17);
-                };
-        }());
-        window.requestAnimationFrame(update);
+        function crearRectangulo(color = "", x, y, ancho, alto = ancho, stroke = color, borderWidth = 10) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.strokeRect(x, y, ancho, alto);
+            ctx.fillRect(x, y, ancho, alto);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+        }
     </script>
 </body>
 
